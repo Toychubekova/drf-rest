@@ -17,8 +17,20 @@ class WomenSerializer(serializers.Serializer):
     content = serializers.CharField()
     time_create = serializers.DateTimeField(read_only=True)
     time_update = serializers.DateTimeField(read_only=True)
-    is_published = serializers.BooleanField()
+    is_published = serializers.BooleanField(read_only=True)
     cat_id = serializers.IntegerField()
+
+    def create(self, validated_data):
+        return Women.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title', instance.title)
+        instance.title = validated_data.get('content', instance.title)
+        instance.title = validated_data.get('time_update', instance.title)
+        instance.title = validated_data.get('is_published', instance.title)
+        instance.title = validated_data.get('cat_id', instance.title)
+        instance.save()
+        return instance
 
 
 
